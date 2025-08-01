@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Event Comments</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .comment { border: 1px solid #ddd; margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .quick-comment { background-color: #f0f8ff; }
+        .user-info { font-weight: bold; color: #666; }
+        .timestamp { font-size: 0.9em; color: #999; }
+        button { margin: 5px; padding: 8px 15px; cursor: pointer; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Event Comments Verification</h1>
+    <div id="status"></div>
+    <div id="comments"></div>
+
+    <script>
+    async function verifyComments() {
+        const statusDiv = document.getElementById('status');
+        const commentsDiv = document.getElementById('comments');
+        
+        try {
+            statusDiv.innerHTML = '<div>Loading comments...</div>';
+            
+            const response = await fetch('/api/events/4/comments');
+            const comments = await response.json();
+            
+            if (response.ok) {
+                statusDiv.innerHTML = `<div class="success">✓ Successfully loaded ${comments.length} comments</div>`;
+                
+                if (comments.length === 0) {
+                    commentsDiv.innerHTML = '<div>No comments found. The database might be empty.</div>';
+                    return;
+                }
+                
+                commentsDiv.innerHTML = '<h2>Comments for Event 4 (St Peters parkrun):</h2>' + 
+                    comments.map(comment => `
+                        <div class="comment ${comment.isQuickComment ? 'quick-comment' : ''}">
+                            <div class="user-info">
+                                ${comment.user?.firstName || 'Unknown'} ${comment.user?.lastName || 'User'}
+                                ${comment.isQuickComment ? ' (Quick Comment)' : ''}
+                            </div>
+                            <div>${comment.content}</div>
+                            <div class="timestamp">${new Date(comment.createdAt).toLocaleString()}</div>
+                        </div>
+                    `).join('');
+                
+                // Test if we can access the main app
+                statusDiv.innerHTML += '<div><button onclick="openMainApp()">Open Main App to Test UI</button></div>';
+                
+            } else {
+                statusDiv.innerHTML = `<div class="error">✗ Error loading comments: ${response.status} ${response.statusText}</div>`;
+                commentsDiv.innerHTML = `<pre>${JSON.stringify(comments, null, 2)}</pre>`;
+            }
+            
+        } catch (error) {
+            statusDiv.innerHTML = `<div class="error">✗ Network error: ${error.message}</div>`;
+        }
+    }
+    
+    function openMainApp() {
+        window.open('/', '_blank');
+    }
+    
+    // Load on page ready
+    verifyComments();
+    </script>
+</body>
+</html>

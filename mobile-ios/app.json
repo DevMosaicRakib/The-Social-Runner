@@ -1,0 +1,73 @@
+{
+  "expo": {
+    "name": "The Social Runner",
+    "slug": "the-social-runner-ios",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "platforms": ["ios"],
+    "ios": {
+      "bundleIdentifier": "com.thesocialrunner.ios",
+      "buildNumber": "1",
+      "supportsTablet": true,
+      "icon": "./assets/icon.png",
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff",
+        "tabletImage": "./assets/splash-tablet.png"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "The Social Runner uses your location to find nearby running events and connect you with local running communities.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "The Social Runner uses your location to find nearby running events and connect you with local running communities.",
+        "NSCameraUsageDescription": "The Social Runner uses your camera to take profile photos and share running moments.",
+        "NSPhotoLibraryUsageDescription": "The Social Runner accesses your photo library to select profile photos and share running achievements.",
+        "NSMicrophoneUsageDescription": "The Social Runner may use your microphone for video sharing features.",
+        "NSCalendarsUsageDescription": "The Social Runner can add running events to your calendar to help you stay organised.",
+        "NSContactsUsageDescription": "The Social Runner can access your contacts to help you invite friends to running events.",
+        "NSMotionUsageDescription": "The Social Runner uses motion data to track your running activities and provide better event recommendations.",
+        "UIBackgroundModes": [
+          "background-fetch",
+          "background-processing"
+        ]
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/notification-sound.wav"
+          ]
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "13.0"
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id-ios"
+      }
+    }
+  }
+}

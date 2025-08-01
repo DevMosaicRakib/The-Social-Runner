@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Preferred Distances Multi-Select</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .checkbox-group { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0; }
+        .checkbox-item { display: flex; align-items: center; gap: 5px; }
+        .result { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 3px; }
+        .badge { background: #e0e0e0; padding: 2px 8px; border-radius: 12px; margin: 2px; display: inline-block; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>Test Preferred Distances Multi-Select Functionality</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Multi-Selection Interface</h2>
+        <p>The profile should allow users to select multiple preferred distances using checkboxes:</p>
+        
+        <div class="checkbox-group">
+            <div class="checkbox-item">
+                <input type="checkbox" id="5k" value="5k">
+                <label for="5k">5K</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="10k" value="10k">
+                <label for="10k">10K</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="15k" value="15k">
+                <label for="15k">15K</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="half_marathon" value="half_marathon">
+                <label for="half_marathon">Half Marathon</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="marathon" value="marathon">
+                <label for="marathon">Marathon</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="ultra" value="ultra">
+                <label for="ultra">Ultra Marathon</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="fun_run" value="fun_run">
+                <label for="fun_run">Fun Run</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="other" value="other">
+                <label for="other">Other</label>
+            </div>
+        </div>
+        
+        <button onclick="testSelection()">Test Selection</button>
+        <div class="result" id="selectionResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Display as Badges</h2>
+        <p>Selected distances should display as badges in the profile view:</p>
+        <div id="badgeDisplay">
+            <span class="badge">5K</span>
+            <span class="badge">10K</span>
+            <span class="badge">Half Marathon</span>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Profile Navigation</h2>
+        <p>To test the actual functionality:</p>
+        <ol>
+            <li>Navigate to <a href="http://localhost:5000/" target="_blank">The Social Runner App</a></li>
+            <li>Log in with your account</li>
+            <li>Go to your Profile page</li>
+            <li>Look for the "Running Preferences" section</li>
+            <li>Click "Edit" to modify preferences</li>
+            <li>Verify the "Preferred Distances" section shows checkboxes</li>
+            <li>Select multiple distances</li>
+            <li>Save changes</li>
+            <li>Verify distances display as badges in the profile view</li>
+        </ol>
+    </div>
+    
+    <script>
+        function testSelection() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const selected = Array.from(checkboxes).map(cb => cb.value);
+            const labels = Array.from(checkboxes).map(cb => cb.nextElementSibling.textContent);
+            
+            document.getElementById('selectionResult').innerHTML = `
+                <strong>Selected Values:</strong> ${selected.join(', ')}<br>
+                <strong>Display Labels:</strong> ${labels.join(', ')}<br>
+                <strong>Count:</strong> ${selected.length} distance(s) selected
+            `;
+        }
+        
+        // Pre-select some options for demo
+        document.getElementById('5k').checked = true;
+        document.getElementById('10k').checked = true;
+        document.getElementById('half_marathon').checked = true;
+        testSelection();
+    </script>
+</body>
+</html>

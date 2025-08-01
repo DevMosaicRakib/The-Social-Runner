@@ -1,0 +1,60 @@
+name: Deploy iOS App
+
+on:
+  push:
+    branches: [main]
+    paths: ['mobile-ios/**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: mobile-ios/package-lock.json
+        
+    - name: Setup Expo CLI
+      run: npm install -g @expo/cli@latest
+      
+    - name: Install dependencies
+      working-directory: ./mobile-ios
+      run: npm ci
+      
+    - name: Expo login
+      working-directory: ./mobile-ios
+      run: expo login --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        
+    - name: Build iOS (Development)
+      if: github.ref != 'refs/heads/main'
+      working-directory: ./mobile-ios
+      run: eas build --platform ios --profile development --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        
+    - name: Build iOS (Production)
+      if: github.ref == 'refs/heads/main'
+      working-directory: ./mobile-ios
+      run: eas build --platform ios --profile production --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        
+    - name: Submit to App Store
+      if: github.ref == 'refs/heads/main'
+      working-directory: ./mobile-ios
+      run: eas submit --platform ios --profile production --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}

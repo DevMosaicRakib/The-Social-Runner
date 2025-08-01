@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Training Difficulty Adjuster Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-orange { background: #fed7aa; color: #c2410c; }
+        .badge-red { background: #fecaca; color: #dc2626; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .metric {
+            text-align: center;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        .recommendation {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .feedback-form {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+        button {
+            background: #f97316;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 4px;
+        }
+        button:hover {
+            background: #ea580c;
+        }
+        button.secondary {
+            background: #6b7280;
+        }
+        button.secondary:hover {
+            background: #4b5563;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            margin: 4px 0;
+        }
+        .adjustment-log {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border-left: 3px solid #64748b;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠 Adaptive Training Difficulty Adjuster - Test Demo</h1>
+    <p>This demonstrates the intelligent training plan adjustment system that automatically adapts difficulty based on user performance and feedback.</p>
+
+    <div class="card">
+        <h2>Current Difficulty Status</h2>
+        <div class="grid">
+            <div class="metric">
+                <div>Performance Score</div>
+                <div class="metric-value">87%</div>
+                <span class="badge badge-green">Improving</span>
+            </div>
+            <div class="metric">
+                <div>Completion Rate</div>
+                <div class="metric-value">92%</div>
+                <span class="badge badge-green">Excellent</span>
+            </div>
+            <div class="metric">
+                <div>Avg Effort</div>
+                <div class="metric-value">6.2/10</div>
+                <span class="badge badge-blue">Moderate</span>
+            </div>
+            <div class="metric">
+                <div>Workouts</div>
+                <div class="metric-value">12</div>
+                <span class="badge badge-orange">This Week</span>
+            </div>
+        </div>
+
+        <div>
+            <h3>Quick Actions</h3>
+            <button onclick="adjustDifficulty('decrease')">📉 Make Easier</button>
+            <button onclick="adjustDifficulty('increase')">📈 Make Harder</button>
+            <button onclick="toggleFeedbackForm()">⭐ Give Feedback</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🤖 AI Recommendations</h2>
+        <div class="recommendation">
+            <strong>Difficulty Increase Suggested</strong>
+            <p>Your completion rate is excellent (92%) and workouts feel manageable (avg effort 6.2/10). Consider increasing training intensity by 15% for optimal progression.</p>
+            <span class="badge badge-green">85% confidence</span>
+        </div>
+        <div class="recommendation">
+            <strong>Volume Progression</strong>
+            <p>You're adapting well to current training load. Your fitness trend shows improvement, making this an ideal time to add more weekly distance.</p>
+            <span class="badge badge-blue">78% confidence</span>
+        </div>
+    </div>
+
+    <div class="card" id="feedbackForm" style="display: none;">
+        <h2>📝 Workout Feedback</h2>
+        <div class="feedback-form">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <label>Workout Date:</label>
+                    <input type="date" id="workoutDate" value="2025-01-25">
+                </div>
+                <div>
+                    <label>Workout Type:</label>
+                    <select id="workoutType">
+                        <option value="easy_run">Easy Run</option>
+                        <option value="tempo_run">Tempo Run</option>
+                        <option value="long_run">Long Run</option>
+                        <option value="intervals">Intervals</option>
+                        <option value="recovery_run">Recovery Run</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin: 16px 0;">
+                <label>Did you complete this workout?</label><br>
+                <button onclick="setCompleted(true)" id="completedYes">Yes</button>
+                <button onclick="setCompleted(false)" id="completedNo" class="secondary">No</button>
+            </div>
+
+            <div>
+                <label>Difficulty Rating (1=Too Easy, 10=Too Hard): <span id="difficultyValue">5</span></label>
+                <input type="range" id="difficultyRating" class="slider" min="1" max="10" value="5" 
+                       oninput="document.getElementById('difficultyValue').textContent = this.value">
+            </div>
+
+            <div>
+                <label>Effort Rating (1=Very Easy, 10=Maximum Effort): <span id="effortValue">5</span></label>
+                <input type="range" id="effortRating" class="slider" min="1" max="10" value="5" 
+                       oninput="document.getElementById('effortValue').textContent = this.value">
+            </div>
+
+            <div>
+                <label>Energy Level Before Workout: <span id="energyValue">5</span></label>
+                <input type="range" id="energyLevel" class="slider" min="1" max="10" value="5" 
+                       oninput="document.getElementById('energyValue').textContent = this.value">
+            </div>
+
+            <div>
+                <label>Notes (optional):</label>
+                <textarea id="notes" placeholder="How did this workout feel? Any challenges or observations?" rows="3"></textarea>
+            </div>
+
+            <div style="margin-top: 16px;">
+                <button onclick="submitFeedback()">Submit Feedback</button>
+                <button onclick="toggleFeedbackForm()" class="secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📊 Recent Adjustments</h2>
+        <div class="adjustment-log">
+            <strong>Difficulty Increase</strong> - 3 days ago<br>
+            <small>Reason: High completion rate with low difficulty ratings</small><br>
+            <span class="badge badge-blue">1.15x multiplier</span>
+        </div>
+        <div class="adjustment-log">
+            <strong>Volume Increase</strong> - 1 week ago<br>
+            <small>Reason: Improving fitness trend detected</small><br>
+            <span class="badge badge-green">1.10x multiplier</span>
+        </div>
+        <div class="adjustment-log">
+            <strong>Pace Adjustment</strong> - 2 weeks ago<br>
+            <small>Reason: User requested easier pacing</small><br>
+            <span class="badge badge-orange">0.95x multiplier</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🔬 How It Works</h2>
+        <h3>Performance Analysis</h3>
+        <ul>
+            <li><strong>Completion Rate:</strong> Tracks percentage of workouts completed vs. planned</li>
+            <li><strong>Difficulty Ratings:</strong> User subjective feedback on workout difficulty (1-10 scale)</li>
+            <li><strong>Effort Ratings:</strong> Perceived exertion during workouts</li>
+            <li><strong>Consistency Score:</strong> Measures variance in performance ratings</li>
+            <li><strong>Improvement Trend:</strong> Tracks fitness progression over time</li>
+        </ul>
+
+        <h3>AI-Powered Recommendations</h3>
+        <ul>
+            <li><strong>Difficulty Increase:</strong> When completion rate ≥90% and difficulty ≤3.5</li>
+            <li><strong>Difficulty Decrease:</strong> When completion rate ≤60% and difficulty ≥7.5</li>
+            <li><strong>Volume Changes:</strong> Based on effort trends and fitness improvements</li>
+            <li><strong>Schedule Adjustments:</strong> When performance consistency is low</li>
+            <li><strong>Pace Modifications:</strong> When effort levels are consistently too high</li>
+        </ul>
+
+        <h3>Automatic Adjustments</h3>
+        <ul>
+            <li>System only makes automatic adjustments with ≥80% confidence</li>
+            <li>Maximum one adjustment per week to prevent over-correction</li>
+            <li>All adjustments are logged with reasoning for transparency</li>
+            <li>Users can manually override any automatic adjustments</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>✅ Technical Implementation</h2>
+        <ul>
+            <li><strong>Database Schema:</strong> workout_feedback and training_adjustments tables</li>
+            <li><strong>Backend Engine:</strong> AdaptiveDifficultyEngine class with ML-style algorithms</li>
+            <li><strong>Real-time Analysis:</strong> Performance metrics calculated from recent workout data</li>
+            <li><strong>API Endpoints:</strong> GET adaptive-difficulty, POST workout-feedback, POST adjust-difficulty</li>
+            <li><strong>React Components:</strong> AdaptiveDifficultyAdjuster with interactive feedback forms</li>
+            <li><strong>Intelligence:</strong> Variance analysis, trend detection, and confidence scoring</li>
+        </ul>
+    </div>
+
+    <script>
+        let completed = false;
+
+        function toggleFeedbackForm() {
+            const form = document.getElementById('feedbackForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function setCompleted(value) {
+            completed = value;
+            document.getElementById('completedYes').style.background = value ? '#f97316' : '#6b7280';
+            document.getElementById('completedNo').style.background = !value ? '#f97316' : '#6b7280';
+        }
+
+        function adjustDifficulty(type) {
+            const action = type === 'increase' ? 'increased' : 'decreased';
+            alert(`Training difficulty ${action}! The system will adjust your future workouts accordingly.`);
+        }
+
+        function submitFeedback() {
+            const feedback = {
+                workoutDate: document.getElementById('workoutDate').value,
+                workoutType: document.getElementById('workoutType').value,
+                completed: completed,
+                difficultyRating: document.getElementById('difficultyRating').value,
+                effortRating: document.getElementById('effortRating').value,
+                energyLevel: document.getElementById('energyLevel').value,
+                notes: document.getElementById('notes').value
+            };
+
+            console.log('Workout Feedback:', feedback);
+            alert('Feedback submitted! The AI will analyze your input and adjust future workouts automatically.');
+            toggleFeedbackForm();
+            
+            // Reset form
+            setCompleted(false);
+            document.getElementById('notes').value = '';
+        }
+
+        // Initialize
+        setCompleted(false);
+    </script>
+</body>
+</html>

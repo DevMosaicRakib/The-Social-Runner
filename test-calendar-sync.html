@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Synchronisation Test - The Social Runner</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f8fafc;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .badge-orange { background: #fed7aa; color: #c2410c; }
+        .badge-purple { background: #e9d5ff; color: #7c3aed; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .metric {
+            text-align: center;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        .sync-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin: 12px 0;
+            transition: all 0.2s;
+        }
+        .sync-option:hover {
+            border-color: #f97316;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+        }
+        button {
+            background: #f97316;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button:hover {
+            background: #ea580c;
+        }
+        button.secondary {
+            background: #6b7280;
+        }
+        button.secondary:hover {
+            background: #4b5563;
+        }
+        button.outline {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        button.outline:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        .tab-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .tab-list {
+            display: flex;
+            background: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        .tab.active {
+            color: #f97316;
+            background: white;
+            border-bottom: 2px solid #f97316;
+        }
+        .tab-content {
+            padding: 24px;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .calendar-preview {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .event-item {
+            background: white;
+            border-left: 4px solid #f97316;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .event-time {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        .event-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin: 4px 0;
+        }
+        .event-details {
+            font-size: 14px;
+            color: #4b5563;
+        }
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .platform-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .platform-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            background: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step-list {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .step-list ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .step-list li {
+            margin: 8px 0;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+    <h1>📅 Calendar Synchronisation - Test Demo</h1>
+    <p>Test the complete calendar synchronisation functionality for training plans across all major platforms.</p>
+
+    <!-- Sync Overview -->
+    <div class="card">
+        <h2>Training Plan Sync Summary</h2>
+        <div class="grid">
+            <div class="metric">
+                <div>Total Workouts</div>
+                <div class="metric-value" style="color: #3b82f6;">48</div>
+                <span class="badge badge-blue">12 weeks</span>
+            </div>
+            <div class="metric">
+                <div>Weekly Workouts</div>
+                <div class="metric-value" style="color: #10b981;">4</div>
+                <span class="badge badge-green">Average</span>
+            </div>
+            <div class="metric">
+                <div>Calendar Events</div>
+                <div class="metric-value" style="color: #f97316;">48</div>
+                <span class="badge badge-orange">Generated</span>
+            </div>
+            <div class="metric">
+                <div>Duration</div>
+                <div class="metric-value" style="color: #8b5cf6;">12</div>
+                <span class="badge badge-purple">Weeks</span>
+            </div>
+        </div>
+
+        <!-- Quick Sync Actions -->
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px;">
+            <button onclick="syncToGoogle()">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Add to Google Calendar
+            </button>
+            <button onclick="syncToOutlook()" class="outline">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/><path d="M12 7l-5 3v4l5 3 5-3v-4l-5-3z"/></svg>
+                Add to Outlook
+            </button>
+            <button onclick="downloadICal()" class="outline">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15l3 3 3-3"/></svg>
+                Download .ics File
+            </button>
+        </div>
+    </div>
+
+    <!-- Platform Options -->
+    <div class="tab-container">
+        <div class="tab-list">
+            <button class="tab active" onclick="showTab('mobile')">Mobile Devices</button>
+            <button class="tab" onclick="showTab('desktop')">Desktop Apps</button>
+            <button class="tab" onclick="showTab('web')">Web Calendars</button>
+            <button class="tab" onclick="showTab('preview')">Calendar Preview</button>
+        </div>
+
+        <div class="tab-content active" id="mobile">
+            <h3>📱 Mobile Calendar Sync</h3>
+            <p>Sync your training plan to iPhone and Android calendar apps with one-tap import.</p>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <div class="platform-icon">📱</div>
+                    <h4>iPhone (iOS)</h4>
+                    <p style="font-size: 14px; color: #6b7280; margin: 8px 0;">Syncs with Apple Calendar, Google Calendar, Outlook</p>
+                    <button onclick="downloadICal()" style="width: 100%;">Download for iPhone</button>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">🤖</div>
+                    <h4>Android</h4>
+                    <p style="font-size: 14px; color: #6b7280; margin: 8px 0;">Syncs with Google Calendar, Samsung Calendar, Outlook</p>
+                    <button onclick="downloadICal()" style="width: 100%;">Download for Android</button>
+                </div>
+            </div>
+
+            <div class="step-list">
+                <h4 style="color: #1e40af; margin: 0 0 12px 0;">📝 Mobile Setup Instructions</h4>
+                <ol style="color: #1e40af;">
+                    <li>Download the .ics file to your phone</li>
+                    <li>Tap the downloaded file to open it</li>
+                    <li>Choose "Add to Calendar" or "Import"</li>
+                    <li>Select your preferred calendar app</li>
+                    <li>Your training workouts will appear in your calendar</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="tab-content" id="desktop">
+            <h3>💻 Desktop Calendar Applications</h3>
+            <p>Import your training plan into popular desktop calendar applications.</p>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <div class="platform-icon">🍎</div>
+                    <h4>Apple Calendar</h4>
+                    <p style="font-size: 14px; color: #6b7280; margin: 8px 0;">macOS built-in calendar application</p>
+                    <button onclick="downloadICal()" style="width: 100%;">Download & Import</button>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">📧</div>
+                    <h4>Outlook Desktop</h4>
+                    <p style="font-size: 14px; color: #6b7280; margin: 8px 0;">Microsoft Outlook desktop app</p>
+                    <button onclick="downloadICal()" style="width: 100%;">Download & Import</button>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">🦅</div>
+                    <h4>Thunderbird</h4>
+                    <p style="font-size: 14px; color: #6b7280; margin: 8px 0;">Mozilla calendar application</p>
+                    <button onclick="downloadICal()" style="width: 100%;">Download & Import</button>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">📅</div>
+                    <h4>Other iCal Apps</h4>
+                    <p style="font-size: 14px; color: #6b7280; margin: 8px 0;">Any iCal-compatible application</p>
+                    <button onclick="downloadICal()" style="width: 100%;">Download & Import</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="web">
+            <h3>🌐 Web-Based Calendars</h3>
+            <p>Add your training plan directly to online calendar services.</p>
+            
+            <div class="sync-option">
+                <div>
+                    <h4 style="margin: 0;">Google Calendar</h4>
+                    <p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Add events directly to your Google Calendar</p>
+                </div>
+                <button onclick="syncToGoogle()">Add to Google</button>
+            </div>
+            
+            <div class="sync-option">
+                <div>
+                    <h4 style="margin: 0;">Outlook Web</h4>
+                    <p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Sync with Outlook.com online calendar</p>
+                </div>
+                <button onclick="syncToOutlook()">Add to Outlook</button>
+            </div>
+            
+            <div class="sync-option">
+                <div>
+                    <h4 style="margin: 0;">Calendar URL</h4>
+                    <p style="margin: 4px 0; color: #6b7280; font-size: 14px;">Subscribe to live updates via calendar URL</p>
+                </div>
+                <button onclick="copyCalendarUrl()" class="outline">Copy URL</button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="preview">
+            <h3>👀 Calendar Preview</h3>
+            <p>See what your training plan will look like in your calendar.</p>
+            
+            <div class="calendar-preview">
+                <h4 style="margin: 0 0 16px 0; color: #1f2937;">Week 1 - January 2025</h4>
+                
+                <div class="event-item">
+                    <div class="event-time">Monday, Jan 27 • 6:30 AM - 7:15 AM</div>
+                    <div class="event-title">Easy Run - 5km 🟢</div>
+                    <div class="event-details">Target Pace: 6:00/km • Intensity: Low • Duration: 45 min</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-time">Wednesday, Jan 29 • 6:00 AM - 6:50 AM</div>
+                    <div class="event-title">Tempo Run - 6km 🟡</div>
+                    <div class="event-details">Target Pace: 4:30/km • Intensity: Moderate • Duration: 50 min</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-time">Friday, Jan 31 • 6:15 AM - 7:10 AM</div>
+                    <div class="event-title">Hill Training - 4km 🔥</div>
+                    <div class="event-details">Target Pace: 5:30/km • Intensity: High • Duration: 55 min</div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-time">Sunday, Feb 2 • 7:00 AM - 8:30 AM</div>
+                    <div class="event-title">Long Run - 12km 🟢</div>
+                    <div class="event-details">Target Pace: 6:30/km • Intensity: Low • Duration: 90 min</div>
+                </div>
+            </div>
+            
+            <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 0 8px 8px 0;">
+                <h4 style="color: #92400e; margin: 0 0 8px 0;">💡 Calendar Features</h4>
+                <ul style="color: #92400e; margin: 0; padding-left: 20px;">
+                    <li>Automatic workout scheduling based on optimal times</li>
+                    <li>Smart duration calculation including warm-up and cool-down</li>
+                    <li>Intensity indicators with emoji visual cues</li>
+                    <li>Detailed workout descriptions and training notes</li>
+                    <li>Timezone support for accurate scheduling</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Details -->
+    <div class="card">
+        <h2>🔧 Technical Implementation</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div>
+                <h3>Supported Formats</h3>
+                <ul style="color: #4b5563;">
+                    <li><strong>iCal (.ics):</strong> Universal calendar format</li>
+                    <li><strong>Google Calendar URLs:</strong> Direct import links</li>
+                    <li><strong>Outlook URLs:</strong> Web-based calendar integration</li>
+                    <li><strong>Calendar Subscriptions:</strong> Live updating feeds</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Calendar Data</h3>
+                <ul style="color: #4b5563;">
+                    <li><strong>Event Titles:</strong> Workout type and distance</li>
+                    <li><strong>Descriptions:</strong> Training notes and instructions</li>
+                    <li><strong>Timing:</strong> Optimal workout schedules</li>
+                    <li><strong>Categories:</strong> Training classification tags</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 16px; margin-top: 20px; border-radius: 0 8px 8px 0;">
+            <h4 style="color: #0c4a6e; margin: 0 0 8px 0;">✅ Sync Benefits</h4>
+            <p style="color: #0c4a6e; margin: 0;">
+                Calendar synchronisation ensures you never miss a training session. Get native notifications, 
+                view your workout schedule alongside other commitments, and track your progress across all devices. 
+                Your training plan integrates seamlessly with your existing calendar workflow.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function syncToGoogle() {
+            const message = "Opening Google Calendar...\n\nYour training plan will be added as a new calendar. You can view and edit these events in Google Calendar.";
+            alert(message);
+            // In real implementation, this would open the Google Calendar import URL
+        }
+
+        function syncToOutlook() {
+            const message = "Opening Outlook Calendar...\n\nYour training plan will be imported into Outlook. You can manage these events in Outlook Web or desktop app.";
+            alert(message);
+            // In real implementation, this would open the Outlook import URL
+        }
+
+        function downloadICal() {
+            const message = "Downloading training plan calendar file...\n\nThe .ics file will be saved to your downloads folder. Open it with any calendar app to import your training schedule.";
+            alert(message);
+            // In real implementation, this would trigger the iCal file download
+        }
+
+        function copyCalendarUrl() {
+            const url = "https://app.thesocialrunner.com/api/training-plans/123/calendar/ical";
+            navigator.clipboard.writeText(url).then(() => {
+                alert("Calendar URL copied to clipboard!\n\nYou can paste this URL into any calendar app that supports calendar subscriptions.");
+            }).catch(() => {
+                alert("Failed to copy URL. Please try again.");
+            });
+        }
+    </script>
+</body>
+</html>

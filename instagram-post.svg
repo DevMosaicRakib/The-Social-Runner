@@ -1,0 +1,146 @@
+<svg width="1080" height="1080" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0891b2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0e7490;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="orangeAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:0.95" />
+    </linearGradient>
+    
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="20" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="url(#backgroundGradient)"/>
+  
+  <!-- Decorative running track elements -->
+  <g opacity="0.15">
+    <ellipse cx="540" cy="300" rx="400" ry="180" fill="none" stroke="#ffffff" stroke-width="6"/>
+    <ellipse cx="540" cy="300" rx="350" ry="150" fill="none" stroke="#ffffff" stroke-width="4"/>
+    <ellipse cx="540" cy="300" rx="300" ry="120" fill="none" stroke="#ffffff" stroke-width="4"/>
+  </g>
+  
+  <!-- Orange geometric accent lines -->
+  <g opacity="0.6">
+    <line x1="200" y1="100" x2="300" y2="50" stroke="url(#orangeAccent)" stroke-width="8"/>
+    <line x1="250" y1="120" x2="350" y2="70" stroke="url(#orangeAccent)" stroke-width="6"/>
+    <line x1="300" y1="140" x2="400" y2="90" stroke="url(#orangeAccent)" stroke-width="6"/>
+    <line x1="350" y1="160" x2="450" y2="110" stroke="url(#orangeAccent)" stroke-width="4"/>
+    
+    <line x1="880" y1="100" x2="780" y2="50" stroke="url(#orangeAccent)" stroke-width="8"/>
+    <line x1="830" y1="120" x2="730" y2="70" stroke="url(#orangeAccent)" stroke-width="6"/>
+    <line x1="780" y1="140" x2="680" y2="90" stroke="url(#orangeAccent)" stroke-width="6"/>
+    <line x1="730" y1="160" x2="630" y2="110" stroke="url(#orangeAccent)" stroke-width="4"/>
+  </g>
+  
+  <!-- Central runner figure inspired by the provided image -->
+  <g transform="translate(540,200)">
+    <!-- Runner head -->
+    <circle cx="0" cy="-20" r="20" fill="#8B5A2B"/>
+    <!-- Cap -->
+    <ellipse cx="0" cy="-30" rx="22" ry="12" fill="#1f2937"/>
+    <ellipse cx="0" cy="-25" rx="18" ry="8" fill="#1f2937"/>
+    <!-- Running singlet -->
+    <ellipse cx="0" cy="10" rx="25" ry="35" fill="#1e40af"/>
+    <!-- Arms -->
+    <ellipse cx="-20" cy="0" rx="8" ry="25" fill="#8B5A2B" transform="rotate(-20)"/>
+    <ellipse cx="20" cy="0" rx="8" ry="25" fill="#8B5A2B" transform="rotate(20)"/>
+    <!-- Shorts -->
+    <ellipse cx="0" cy="45" rx="20" ry="15" fill="#1f2937"/>
+    <!-- Legs -->
+    <ellipse cx="-10" cy="70" rx="8" ry="30" fill="#8B5A2B" transform="rotate(-10)"/>
+    <ellipse cx="12" cy="75" rx="8" ry="32" fill="#8B5A2B" transform="rotate(15)"/>
+    <!-- Running shoes -->
+    <ellipse cx="-12" cy="95" rx="12" ry="6" fill="#ffffff"/>
+    <ellipse cx="15" cy="100" rx="12" ry="6" fill="#ffffff"/>
+  </g>
+  
+  <!-- Main content card -->
+  <rect x="90" y="350" width="900" height="550" rx="30" fill="url(#cardGradient)" filter="url(#shadow)"/>
+  
+  <!-- Main heading -->
+  <text x="540" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="52" font-weight="bold" fill="#1f2937">
+    The Social Runner
+  </text>
+  
+  <!-- Tagline -->
+  <text x="540" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#6b7280">
+    Creating Change Through Community
+  </text>
+  
+  <!-- Mission statement -->
+  <text x="540" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#4b5563">
+    Building a supportive community of runners who
+  </text>
+  <text x="540" y="535" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#4b5563">
+    uplift, encourage, and inspire each other
+  </text>
+  
+  <!-- Feature highlights -->
+  <g transform="translate(160, 580)">
+    <!-- Find Events -->
+    <circle cx="30" cy="0" r="20" fill="#3b82f6"/>
+    <text x="30" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">📍</text>
+    <text x="65" y="6" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#1f2937">Find Local Events</text>
+    
+    <!-- Create Events -->
+    <circle cx="30" cy="45" r="20" fill="#10b981"/>
+    <text x="30" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">📅</text>
+    <text x="65" y="51" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#1f2937">Create Your Own Runs</text>
+    
+    <!-- Training Plans -->
+    <circle cx="30" cy="90" r="20" fill="#dc2626"/>
+    <text x="30" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">🎯</text>
+    <text x="65" y="96" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#1f2937">Professional Training Plans</text>
+  </g>
+  
+  <g transform="translate(520, 580)">
+    <!-- Build Community -->
+    <circle cx="30" cy="0" r="20" fill="#8b5cf6"/>
+    <text x="30" y="6" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">👥</text>
+    <text x="65" y="6" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#1f2937">Build Community</text>
+    
+    <!-- Support Network -->
+    <circle cx="30" cy="45" r="20" fill="#f59e0b"/>
+    <text x="30" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">💪</text>
+    <text x="65" y="51" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#1f2937">Support Network</text>
+    
+    <!-- Never Run Alone -->
+    <circle cx="30" cy="90" r="20" fill="#06b6d4"/>
+    <text x="30" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#ffffff">❤️</text>
+    <text x="65" y="96" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#1f2937">Never Run Alone</text>
+  </g>
+  
+  <!-- Call to action -->
+  <rect x="270" y="740" width="540" height="70" rx="35" fill="url(#orangeAccent)"/>
+  <text x="540" y="785" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#ffffff">
+    Transform Your Running Journey
+  </text>
+  
+  <!-- Website URL -->
+  <text x="540" y="860" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="600" fill="#1f2937">
+    www.thesocialrunner.com.au
+  </text>
+  
+  <!-- Community message -->
+  <text x="540" y="920" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#4b5563">
+    Building connections that extend beyond running
+  </text>
+  
+  <!-- Hashtags area -->
+  <text x="540" y="980" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#6b7280">
+    #TheSocialRunner #RunningCommunity #Australia #NeverRunAlone
+  </text>
+</svg>

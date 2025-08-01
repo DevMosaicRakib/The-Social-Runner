@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 84%, 4.9%);
+  --muted: hsl(210, 40%, 98%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222, 84%, 4.9%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --primary: hsl(14, 100%, 60%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(210, 40%, 98%);
+  --secondary-foreground: hsl(222, 84%, 4.9%);
+  --accent: hsl(210, 40%, 98%);
+  --accent-foreground: hsl(222, 84%, 4.9%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(222, 84%, 4.9%);
+  --radius: 0.5rem;
+  
+  /* Custom colors to match design */
+  --primary-orange: hsl(14, 100%, 60%);
+  --primary-orange-dark: hsl(14, 85%, 50%);
+  --secondary-blue: hsl(213, 78%, 58%);
+  --secondary-blue-dark: hsl(213, 85%, 45%);
+}
+
+.dark {
+  --background: hsl(222, 84%, 4.9%);
+  --foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 32%, 17.5%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --popover: hsl(222, 84%, 4.9%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --card: hsl(222, 84%, 4.9%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 32%, 17.5%);
+  --input: hsl(217, 32%, 17.5%);
+  --primary: hsl(14, 100%, 60%);
+  --primary-foreground: hsl(222, 84%, 4.9%);
+  --secondary: hsl(217, 32%, 17.5%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --accent: hsl(217, 32%, 17.5%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(212, 12%, 84%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-body antialiased text-foreground;
+    background: linear-gradient(135deg, #fef7f0 0%, #f0fdf4 100%);
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      /* Running track lanes - subtle horizontal stripes */
+      repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 48px,
+        rgba(251, 146, 60, 0.03) 48px,
+        rgba(251, 146, 60, 0.03) 50px,
+        transparent 50px,
+        transparent 98px,
+        rgba(251, 146, 60, 0.03) 98px,
+        rgba(251, 146, 60, 0.03) 100px
+      ),
+      /* Subtle dots pattern for texture */
+      radial-gradient(
+        circle at 1px 1px,
+        rgba(251, 146, 60, 0.05) 1px,
+        transparent 0
+      );
+    background-size: 100px 100px, 20px 20px;
+    background-position: 0 0, 0 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Custom styles for maps */
+.map-container {
+  @apply relative overflow-hidden;
+}
+
+.map-overlay {
+  @apply absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center;
+}
+
+/* Primary button with orange color */
+.btn-primary {
+  @apply bg-[hsl(14,100%,60%)] hover:bg-[hsl(14,85%,50%)] text-white;
+}
+
+/* Status badges */
+.status-open {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-almost-full {
+  @apply bg-amber-100 text-amber-800;
+}
+
+.status-full {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Mobile bottom navigation spacing */
+@media (max-width: 768px) {
+  .mobile-content-padding {
+    @apply pb-20;
+  }
+}
+
+/* Custom animations for running track */
+@keyframes track-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes track-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-track-runner-1 {
+  animation: track-float 4s ease-in-out infinite;
+}
+
+.animate-track-runner-2 {
+  animation: track-bounce 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-track-runner-3 {
+  animation: track-float 5s ease-in-out infinite;
+  animation-delay: 2s;
+}

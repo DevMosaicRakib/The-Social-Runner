@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracker Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        pre {
+            background: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Running Progress Tracker - API Test</h1>
+    
+    <div class="test-section">
+        <h3>Test User Statistics API</h3>
+        <button onclick="testUserStats()">Test User Stats</button>
+        <pre id="stats-result">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+        <h3>Test Achievements API</h3>
+        <button onclick="testAchievements()">Test Achievements</button>
+        <pre id="achievements-result">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+        <h3>Test Progress Update API</h3>
+        <button onclick="testProgressUpdate()">Test Progress Update</button>
+        <pre id="progress-result">Click button to test...</pre>
+    </div>
+
+    <div class="test-section">
+        <h3>Frontend Component Test</h3>
+        <p>To test the full React component:</p>
+        <ol>
+            <li>Navigate to your profile page</li>
+            <li>Click on the "Progress" tab</li>
+            <li>Check for animated progress bars</li>
+            <li>Look for motivational messages</li>
+            <li>Verify achievement displays</li>
+        </ol>
+        <button onclick="openProfile()">Open Profile Page</button>
+    </div>
+
+    <script>
+        async function testUserStats() {
+            const result = document.getElementById('stats-result');
+            result.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('/api/stats/test-user-123');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    result.innerHTML = `<span class="success">✓ Success!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    result.innerHTML = `<span class="error">✗ Error:</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">✗ Network Error:</span>\n${error.message}`;
+            }
+        }
+
+        async function testAchievements() {
+            const result = document.getElementById('achievements-result');
+            result.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('/api/achievements/test-user-123?recent=true');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    result.innerHTML = `<span class="success">✓ Success!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    result.innerHTML = `<span class="error">✗ Error:</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">✗ Network Error:</span>\n${error.message}`;
+            }
+        }
+
+        async function testProgressUpdate() {
+            const result = document.getElementById('progress-result');
+            result.textContent = 'Testing...';
+            
+            try {
+                const response = await fetch('/api/progress/1', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        activity: {
+                            type: 'Run',
+                            distance: 5,
+                            time: '00:25:30'
+                        }
+                    })
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    result.innerHTML = `<span class="success">✓ Success!</span>\n${JSON.stringify(data, null, 2)}`;
+                } else {
+                    result.innerHTML = `<span class="error">✗ Error:</span>\n${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">✗ Network Error:</span>\n${error.message}`;
+            }
+        }
+
+        function openProfile() {
+            window.open('/', '_blank');
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            setTimeout(testUserStats, 500);
+            setTimeout(testAchievements, 1000);
+            setTimeout(testProgressUpdate, 1500);
+        });
+    </script>
+</body>
+</html>
