@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import * as client from "openid-client";
 import { Strategy, type VerifyFunction } from "openid-client/passport";
 
